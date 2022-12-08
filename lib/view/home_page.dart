@@ -53,8 +53,8 @@ class _HomePageState extends State<HomePage> {
             ),
             Slider(
               value: ry,
-              min: pi * -2,
-              max: pi * 2,
+              min: 0,
+              max: pi + pi / 4,
               onChanged: ((value) => setState(() {
                     ry = value;
                   })),
@@ -84,12 +84,16 @@ class Cube extends StatelessWidget {
       //Front
       transform: Matrix4.identity()
         ..translate(0.0, 0.0, -100.0)
-        ..rotateY(-pi),
+        ..rotateY(2 * pi),
       alignment: Alignment.center,
       child: Container(
         color: Colors.red,
         height: 200,
         width: 200,
+        child: const Text(
+          "lado A",
+          textAlign: TextAlign.center,
+        ),
       ),
     );
 
@@ -97,23 +101,33 @@ class Cube extends StatelessWidget {
       //port
       transform: Matrix4.identity()
         ..translate(100.0, 0.0, 0.0)
-        ..rotateY(pi / 2),
+        ..rotateY(-pi / 2),
       alignment: Alignment.center,
       child: Container(
         color: Colors.green,
         height: 200,
         width: 200,
+        child: const Text(
+          "lado B",
+          textAlign: TextAlign.center,
+        ),
       ),
     );
 
     late final sideC = Transform(
       //back
-      transform: Matrix4.identity()..translate(0.0, 0.0, 100.0),
+      transform: Matrix4.identity()
+        ..translate(0.0, 0.0, 100.0)
+        ..rotateY(pi),
       alignment: Alignment.center,
       child: Container(
         color: Colors.purple,
         height: 200,
         width: 200,
+        child: const Text(
+          "lado C",
+          textAlign: TextAlign.center,
+        ),
       ),
     );
 
@@ -121,12 +135,16 @@ class Cube extends StatelessWidget {
       //port
       transform: Matrix4.identity()
         ..translate(-100.0, 0.0, 0.0)
-        ..rotateY(-pi / 2),
+        ..rotateY(pi / 2),
       alignment: Alignment.center,
       child: Container(
         color: Colors.yellow,
         height: 200,
         width: 200,
+        child: const Text(
+          "lado D",
+          textAlign: TextAlign.center,
+        ),
       ),
     );
 
@@ -142,11 +160,17 @@ class Cube extends StatelessWidget {
       ),
     );
 
-    if (ry < -pi / 4) {
-      childrens = [sideA, sideB];
-    } else if (ry < -pi / 2) {
-      childrens = [sideB, sideC, topSide];
+    if (ry < pi / 4) {
+      childrens = [sideB, sideA];
+    } else if (ry < pi / 2) {
+      childrens = [sideB, sideA, topSide];
     } else if (ry < 3 * pi / 4) {
+      childrens = [sideC, sideB, topSide];
+    } else if (ry < pi) {
+      childrens = [sideB, sideC, topSide];
+    } else if (ry < 5 * pi / 4) {
+      childrens = [sideD, sideC, topSide];
+    } else if (ry < 3 * pi / 2) {
       childrens = [sideC, sideD, topSide];
     } else {
       childrens = [sideD, sideA, topSide];
