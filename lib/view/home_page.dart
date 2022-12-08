@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import 'components/cube.dart';
+import 'components/cube3D.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
     print("RX: $rx, RY: $ry, RZ: $rz");
     return GestureDetector(
       onPanUpdate: (details) {
-        ry += details.delta.dy * 0.1;
+        ry += details.delta.dx * 0.01;
         setState(() {
           ry %= pi + pi / 4;
         });
