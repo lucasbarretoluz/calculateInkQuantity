@@ -2,6 +2,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import 'components/cube_3d.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
   final String title;
@@ -32,23 +34,20 @@ class _HomePageState extends State<HomePage> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Transform(
-                transform: Matrix4.identity()
-                  ..setEntry(3, 2, 0.001)
-                  // ..rotateX(_offset.dy * pi / 180)
-                  //..rotateY(_offset.dx * pi / 180),
-                  ..rotateX(rx)
-                  ..rotateY(ry)
-                  ..rotateZ(rz),
-                alignment: Alignment.center,
-                child: const Center(child: Cube())),
+            Cube3D(
+              height: 200,
+              width: 200,
+              depth: 200,
+              rotateX: rx,
+              rotateY: ry,
+            ),
             const SizedBox(height: 30),
             Slider(
               value: rx,
               min: pi * -2,
               max: pi * 2,
               onChanged: ((value) => setState(() {
-                    rx = -6.014827168191208;
+                    rx = value;
                   })),
             ),
             Slider(
@@ -64,7 +63,7 @@ class _HomePageState extends State<HomePage> {
               min: pi * -2,
               max: pi * 2,
               onChanged: ((value) => setState(() {
-                    rz = 6.283185307179586;
+                    rz = value;
                   })),
             ),
           ],
