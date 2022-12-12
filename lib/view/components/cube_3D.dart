@@ -95,17 +95,17 @@ class Cube extends StatelessWidget {
     if (rotateY < pi / 4) {
       childrens = [sideB, sideA];
     } else if (rotateY < pi / 2) {
-      childrens = [sideB, sideA, topSide];
+      childrens = [sideA, sideB];
     } else if (rotateY < 3 * pi / 4) {
-      childrens = [sideC, sideB, topSide];
+      childrens = [sideC, sideB];
     } else if (rotateY < pi) {
-      childrens = [sideB, sideC, topSide];
+      childrens = [sideB, sideC];
     } else if (rotateY < 5 * pi / 4) {
-      childrens = [sideD, sideC, topSide];
+      childrens = [sideD, sideC];
     } else if (rotateY < 3 * pi / 2) {
-      childrens = [sideC, sideD, topSide];
+      childrens = [sideC, sideD];
     } else {
-      childrens = [sideD, sideA, topSide];
+      childrens = [sideD, sideA];
     }
 
     childrens.add(topSide);

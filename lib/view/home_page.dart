@@ -16,7 +16,7 @@ class HomePage extends StatefulWidget {
       context.findAncestorStateOfType<_HomePageState>();
 }
 
-double rx = -6, ry = -pi / 4, rz = 2 * pi;
+double rx = -6, ry = pi / 4, rz = 2 * pi;
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                   onPanUpdate: (details) {
                     ry += details.delta.dx * 0.01;
                     setState(() {
-                      ry %= pi + pi / 4;
+                      ry %= 2 * pi;
                     });
                   },
                   child: Cube(
@@ -108,17 +108,6 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             SizedBox(height: heightScreen * 0.06),
-            Visibility(
-              visible: false,
-              child: Slider(
-                value: ry,
-                min: -pi / 4,
-                max: pi + pi / 4,
-                onChanged: ((value) => setState(() {
-                      ry = value;
-                    })),
-              ),
-            ),
             CustomCard(
                 object: Column(
               children: [
@@ -142,6 +131,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget bottomNavigationCube() {
+    const double defaultView = -pi / 5;
     return BottomNavigationBar(
       items: [
         _buildItem("A"),
@@ -156,19 +146,19 @@ class _HomePageState extends State<HomePage> {
       onTap: (int index) {
         switch (index) {
           case 0:
-            ry = -0.39276582928047543;
+            ry = defaultView;
             _onItemTapped(index);
             break;
           case 1:
-            ry = 1.1879139939832022;
+            ry = defaultView + pi / 2;
             _onItemTapped(index);
             break;
           case 2:
-            ry = 2.6989639535562695;
+            ry = defaultView + pi;
             _onItemTapped(index);
             break;
           case 3:
-            ry = 3.9269908169872414;
+            ry = defaultView + (3 * pi / 2);
             _onItemTapped(index);
             break;
           default:
