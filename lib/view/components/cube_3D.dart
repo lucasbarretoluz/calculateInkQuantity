@@ -1,9 +1,11 @@
 import 'dart:math';
+import 'package:calculate_ink_quantity/utils/customText.dart';
 import 'package:flutter/material.dart';
 
 class Cube extends StatelessWidget {
   final double width, height, depth;
   final double rotateX, rotateY;
+  final String sideSelected;
 
   const Cube({
     super.key,
@@ -12,6 +14,7 @@ class Cube extends StatelessWidget {
     required this.depth,
     this.rotateX = 0.0,
     rotateY = 0.0,
+    required this.sideSelected,
   }) : rotateY = rotateY % (pi * 2);
 
   @override
@@ -22,14 +25,7 @@ class Cube extends StatelessWidget {
       transform: Matrix4.translationValues(0.0, 0.0, depth / -2)
         ..rotateY(2 * pi),
       alignment: Alignment.center,
-      child: Container(
-        width: width,
-        height: height,
-        decoration: const BoxDecoration(
-          color: Colors.red,
-        ),
-        child: const Center(child: Text("lado A")),
-      ),
+      child: sideSelected == "A" ? isSelectedSide("A") : isNotSelectedSide(),
     );
 
     late final sideB = Positioned.fill(
@@ -38,26 +34,14 @@ class Cube extends StatelessWidget {
           ..translate((width / 2), 0.0, 0.0)
           ..rotateY(-pi / 2),
         alignment: Alignment.center,
-        child: Container(
-          width: width,
-          height: height,
-          decoration: const BoxDecoration(
-            color: Colors.green,
-          ),
-        ),
+        child: sideSelected == "B" ? isSelectedSide("B") : isNotSelectedSide(),
       ),
     );
 
     late final sideC = Transform(
       transform: Matrix4.translationValues(0.0, 0.0, depth / 2)..rotateY(pi),
       alignment: Alignment.center,
-      child: Container(
-        width: width,
-        height: height,
-        decoration: const BoxDecoration(
-          color: Colors.purple,
-        ),
-      ),
+      child: sideSelected == "C" ? isSelectedSide("C") : isNotSelectedSide(),
     );
 
     late final sideD = Positioned.fill(
@@ -66,13 +50,7 @@ class Cube extends StatelessWidget {
           ..translate((width / -2), 0.0, 0.0)
           ..rotateY(pi / 2),
         alignment: Alignment.center,
-        child: Container(
-          width: width,
-          height: height,
-          decoration: const BoxDecoration(
-            color: Colors.yellow,
-          ),
-        ),
+        child: sideSelected == "D" ? isSelectedSide("D") : isNotSelectedSide(),
       ),
     );
 
@@ -82,13 +60,7 @@ class Cube extends StatelessWidget {
           ..translate(0.0, (height / -2), 0.0)
           ..rotateX(-pi / 2),
         alignment: Alignment.center,
-        child: Container(
-          width: width,
-          height: height,
-          decoration: const BoxDecoration(
-            color: Colors.black,
-          ),
-        ),
+        child: isNotSelectedSide(),
       ),
     );
 
@@ -116,5 +88,37 @@ class Cube extends StatelessWidget {
           ..rotateY(rotateY),
         alignment: Alignment.center,
         child: Stack(children: childrens));
+  }
+
+  Widget isNotSelectedSide() {
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        color: Colors.green[400],
+      ),
+    );
+  }
+
+  Widget isSelectedSide(String title) {
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        color: Colors.green[100],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              CustomText(text: title, size: 20),
+              const SizedBox(width: 10)
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

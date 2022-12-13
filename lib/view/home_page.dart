@@ -18,15 +18,28 @@ class HomePage extends StatefulWidget {
 
 double rx = -6, ry = pi / 4, rz = 2 * pi;
 
+
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  String _sideSelected = "A";
   late double heightScreen, widthScreen;
   double heightArea = 1, widthArea = 1;
   double sideArea = 0;
+  double turns = 0.0;
+//  late final AnimationController _controller = AnimationController(
+//     vsync: this,
+//     duration: const Duration(milliseconds: 1500),
+//   )..forward();
 
-  void _onItemTapped(int index) {
+  // @override
+  // void dispose() {
+  //   // _controller.dispose();
+  //   super.dispose();
+  // }
+  void _onItemTapped(int index, String selected) {
     setState(() {
       _selectedIndex = index;
+      _sideSelected = selected;
     });
   }
 
@@ -48,9 +61,6 @@ class _HomePageState extends State<HomePage> {
         MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
     widthScreen = MediaQuery.of(context).size.width;
     return Scaffold(
-        // appBar: AppBar(
-        //   title: const Text("Teste 2"),
-        // ),
         body: creatScreen(),
         bottomNavigationBar: bottomNavigationCube());
   }
@@ -91,12 +101,17 @@ class _HomePageState extends State<HomePage> {
                       ry %= 2 * pi;
                     });
                   },
-                  child: Cube(
-                    width: widthScreen * 0.35,
-                    height: widthScreen * 0.35,
-                    depth: widthScreen * 0.35,
-                    rotateX: rx,
-                    rotateY: ry,
+                  child: AnimatedRotation(
+                    turns: turns,
+                    duration: const Duration( seconds: 2),
+                    child: Cube(
+                      width: widthScreen * 0.35,
+                      height: widthScreen * 0.35,
+                      depth: widthScreen * 0.35,
+                      rotateX: rx,
+                      rotateY: ry,
+                      sideSelected: _sideSelected,
+                    ),
                   ),
                 ),
                 Column(
@@ -108,6 +123,9 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             SizedBox(height: heightScreen * 0.06),
+            ElevatedButton(onPressed: (){
+                setState((() => turns += 1/4));
+            }, child: Text("Rotate")),
             CustomCard(
                 object: Column(
               children: [
@@ -147,19 +165,22 @@ class _HomePageState extends State<HomePage> {
         switch (index) {
           case 0:
             ry = defaultView;
-            _onItemTapped(index);
+            setState(() {
+               turns += 1/4;
+            });
+            _onItemTapped(index, "A");
             break;
           case 1:
             ry = defaultView + pi / 2;
-            _onItemTapped(index);
+            _onItemTapped(index, "B");
             break;
           case 2:
             ry = defaultView + pi;
-            _onItemTapped(index);
+            _onItemTapped(index, "C");
             break;
           case 3:
             ry = defaultView + (3 * pi / 2);
-            _onItemTapped(index);
+            _onItemTapped(index, "D");
             break;
           default:
         }

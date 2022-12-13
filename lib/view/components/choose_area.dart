@@ -52,37 +52,44 @@ class _ChooseAreaState extends State<ChooseArea> {
                     setState(() => valueBottom = value);
                   }),
             ),
-
-            // SizedBox(width: widthScreen * 0.03),
             CustomText(text: "${valueBottom.toStringAsFixed(2)} m", size: 20),
-            
-             Column(
+
+            Column(
               children: [
                 IconButton(
-                    // iconSize: 25,
                     onPressed: () {
                       setState(() {
-                        valueBottom += 0.01;
-                        HomePage.of(context)?.widthValue = valueBottom += 0.01;
+                        if (valueBottom < 50.0) {
+                          if (widget.slidString == "Altura") {
+                            HomePage.of(context)?.widthValue =
+                                valueBottom += 0.01;
+                          } else {
+                            HomePage.of(context)?.heightValue =
+                                valueBottom += 0.01;
+                          }
+                        }
                       });
                     },
                     icon: const Icon(Icons.arrow_drop_up)),
                 IconButton(
                     onPressed: () {
                       setState(() {
-                        valueBottom -= 0.01;
-                        HomePage.of(context)?.widthValue = valueBottom -= 0.01;
+                        if (valueBottom > 1.0) {
+                          if (widget.slidString == "Altura") {
+                            HomePage.of(context)?.widthValue =
+                                valueBottom -= 0.01;
+                          } else {
+                            HomePage.of(context)?.heightValue =
+                                valueBottom -= 0.01;
+                          }
+                        }
                       });
                     },
                     icon: const Icon(Icons.arrow_drop_down)),
               ],
             )
-          
           ],
         ),
-        
-      
-      
       ],
     );
   }
@@ -93,25 +100,3 @@ class _ChooseAreaState extends State<ChooseArea> {
   }
 }
 
-
-// Column(
-//               children: [
-//                 IconButton(
-//                     // iconSize: 25,
-//                     onPressed: () {
-//                       setState(() {
-//                         valueBottom += 0.10;
-//                         HomePage.of(context)?.widthValue = valueBottom += 0.10;
-//                       });
-//                     },
-//                     icon: const Icon(Icons.arrow_drop_up)),
-//                 IconButton(
-//                     onPressed: () {
-//                       setState(() {
-//                         valueBottom -= 0.10;
-//                         HomePage.of(context)?.widthValue = valueBottom -= 0.10;
-//                       });
-//                     },
-//                     icon: const Icon(Icons.arrow_drop_down)),
-//               ],
-//             )
