@@ -6,6 +6,7 @@ import 'components/choose_area.dart';
 import 'components/cube_3D.dart';
 import '../utils/custom_card.dart';
 import 'components/cube_transition.dart';
+
 //Escreve ai teste
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -17,19 +18,20 @@ class HomePage extends StatefulWidget {
       context.findAncestorStateOfType<_HomePageState>();
 }
 
-double rx = -6, ry = pi / 4, rz = 2 * pi;
+double rx = -6, ry = 0, rz = 2 * pi, finalRy = 0;
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
   String _sideSelected = "A";
+  double _finalRy = 0;
   late double heightScreen, widthScreen;
   double heightArea = 1, widthArea = 1;
   double sideArea = 1;
   double turns = 0.0;
 
   late final AnimationController _controller = AnimationController(
-    upperBound: 1.0,
+    upperBound: 2,
     vsync: this,
     duration: const Duration(milliseconds: 1000),
   )..forward();
@@ -45,10 +47,11 @@ class _HomePageState extends State<HomePage>
     await _controller.forward();
   }
 
-  void _onItemTapped(int index, String selected) {
+  void _onItemTapped(int index, String selected, double finalry) {
     setState(() {
       _selectedIndex = index;
       _sideSelected = selected;
+      _finalRy = finalry;
     });
   }
 
@@ -115,6 +118,7 @@ class _HomePageState extends State<HomePage>
                     height: widthScreen * 0.35,
                     depth: widthScreen * 0.35,
                     rotateY: ry,
+                    finalPosition: _finalRy,
                     selected: _sideSelected,
                   ),
                 ),
@@ -168,32 +172,32 @@ class _HomePageState extends State<HomePage>
         switch (index) {
           case 0:
             setState(() {
-              ry = defaultView;
+              finalRy = defaultView + 4 * pi;
               repeatOnce();
-              _onItemTapped(index, "A");
+              _onItemTapped(index, "A", finalRy);
             });
             break;
           case 1:
             setState(() {
-              ry = defaultView + pi / 2;
+              finalRy = defaultView + pi / 2 + 4 * pi;
               repeatOnce();
-              _onItemTapped(index, "B");
+              _onItemTapped(index, "B", finalRy);
             });
 
             break;
           case 2:
             setState(() {
-              ry = defaultView + pi;
+              finalRy = defaultView + 2 * pi / 2 + 2 * pi;
               repeatOnce();
-              _onItemTapped(index, "C");
+              _onItemTapped(index, "C", finalRy);
             });
 
             break;
           case 3:
             setState(() {
-              ry = defaultView + (3 * pi / 2);
+              finalRy = defaultView + (3 * pi / 2) + 2 * pi;
               repeatOnce();
-              _onItemTapped(index, "D");
+              _onItemTapped(index, "D", finalRy);
             });
 
             break;

@@ -95,7 +95,7 @@ class Cube extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: Colors.green[400],
+        color: Colors.blue,
       ),
     );
   }
@@ -105,7 +105,7 @@ class Cube extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: Colors.green[100],
+        color: Colors.red,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
