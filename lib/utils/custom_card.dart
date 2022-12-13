@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'themeColor.dart';
+
 class CustomCard extends StatelessWidget {
   const CustomCard({
     Key? key,
-    required this.object,
+    required this.child,
   }) : super(key: key);
 
-  final Widget object;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class CustomCard extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.only(top: 6, bottom: 6),
-        child: object,
+        child: child,
       ),
     );
   }

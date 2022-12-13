@@ -1,3 +1,4 @@
+import 'package:calculate_ink_quantity/utils/customText.dart';
 import 'package:flutter/material.dart';
 
 class AddWindowsDoor extends StatefulWidget {
@@ -23,6 +24,7 @@ class _AddWindowsDoorState extends State<AddWindowsDoor> {
       children: [
         Column(
           children: [
+            const SizedBox(height: 5),
             GestureDetector(
               onTap: () {
                 setState(() {
@@ -50,7 +52,8 @@ class _AddWindowsDoorState extends State<AddWindowsDoor> {
                   size: 60,
                 ),
               ),
-            )
+            ),
+            const SizedBox(height: 5),
           ],
         ),
         isSelected == 0
@@ -61,12 +64,44 @@ class _AddWindowsDoorState extends State<AddWindowsDoor> {
   }
 
   Widget _addDoorOrWindows({required String title}) {
-    return Container(
+    return SizedBox(
       height: heightScreen * 0.15,
       width: widthScreen * 0.5,
-      color: Colors.amberAccent,
-      child: Text(title),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CustomText(text: title, size: 20),
+          SizedBox(height: heightScreen * 0.01),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                  onPressed: () {
+                    print("turubom 2");
+                  },
+                  icon: const Icon(
+                    Icons.add,
+                    size: 30,
+                  )),
+              Container(
+                width: 60,
+                height: 60,
+                child: Center(child: CustomText(text: "22", size: 25)),
+                decoration: const BoxDecoration(
+                    shape: BoxShape.circle, color: Color(0xFFe0f2f1)),
+              ),
+              IconButton(
+                  onPressed: () {
+                    print("turubom");
+                  },
+                  icon: const Icon(
+                    Icons.remove,
+                    size: 30,
+                  ))
+            ],
+          )
+        ],
+      ),
     );
   }
-
 }

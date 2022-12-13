@@ -5,6 +5,7 @@ import 'components/add_windows_door.dart';
 import 'components/choose_area.dart';
 import 'components/cube_3D.dart';
 import '../utils/custom_card.dart';
+import 'components/cube_transition.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -18,24 +19,32 @@ class HomePage extends StatefulWidget {
 
 double rx = -6, ry = pi / 4, rz = 2 * pi;
 
-
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
   String _sideSelected = "A";
   late double heightScreen, widthScreen;
   double heightArea = 1, widthArea = 1;
-  double sideArea = 0;
+  double sideArea = 1;
   double turns = 0.0;
-//  late final AnimationController _controller = AnimationController(
-//     vsync: this,
-//     duration: const Duration(milliseconds: 1500),
-//   )..forward();
 
-  // @override
-  // void dispose() {
-  //   // _controller.dispose();
-  //   super.dispose();
-  // }
+  late final AnimationController _controller = AnimationController(
+    upperBound: 1.0,
+    vsync: this,
+    duration: const Duration(milliseconds: 1000),
+  )..forward();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void repeatOnce() async {
+    _controller.reset();
+    await _controller.forward();
+  }
+
   void _onItemTapped(int index, String selected) {
     setState(() {
       _selectedIndex = index;
@@ -61,8 +70,7 @@ class _HomePageState extends State<HomePage> {
         MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
     widthScreen = MediaQuery.of(context).size.width;
     return Scaffold(
-        body: creatScreen(),
-        bottomNavigationBar: bottomNavigationCube());
+        body: creatScreen(), bottomNavigationBar: bottomNavigationCube());
   }
 
   Widget creatScreen() {
@@ -72,7 +80,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            SizedBox(height: heightArea * 1),
+            SizedBox(height: heightScreen * 0.03),
             SizedBox(
               width: double.infinity,
               child: Wrap(
@@ -101,17 +109,13 @@ class _HomePageState extends State<HomePage> {
                       ry %= 2 * pi;
                     });
                   },
-                  child: AnimatedRotation(
-                    turns: turns,
-                    duration: const Duration( seconds: 2),
-                    child: Cube(
-                      width: widthScreen * 0.35,
-                      height: widthScreen * 0.35,
-                      depth: widthScreen * 0.35,
-                      rotateX: rx,
-                      rotateY: ry,
-                      sideSelected: _sideSelected,
-                    ),
+                  child: CubeTrasition(
+                    animation: _controller,
+                    width: widthScreen * 0.35,
+                    height: widthScreen * 0.35,
+                    depth: widthScreen * 0.35,
+                    rotateY: ry,
+                    selected: _sideSelected,
                   ),
                 ),
                 Column(
@@ -123,25 +127,24 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             SizedBox(height: heightScreen * 0.06),
-            ElevatedButton(onPressed: (){
-                setState((() => turns += 1/4));
-            }, child: Text("Rotate")),
             CustomCard(
-                object: Column(
+                child: Column(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Área do quadrado: ${sideArea.toStringAsFixed(2)} m²",
-                        style: const TextStyle(fontSize: 17))
+                    CustomText(
+                        text:
+                            "Área do quadrado: ${sideArea.toStringAsFixed(2)} m²",
+                        size: 20)
                   ],
                 ),
                 ChooseArea(slidString: "Altura"),
                 ChooseArea(slidString: "Largura"),
               ],
             )),
-            SizedBox(height: heightScreen * 0.01),
-            const CustomCard(object: AddWindowsDoor())
+            SizedBox(height: heightScreen * 0.04),
+            const CustomCard(child: AddWindowsDoor())
           ],
         ),
       ),
@@ -164,23 +167,35 @@ class _HomePageState extends State<HomePage> {
       onTap: (int index) {
         switch (index) {
           case 0:
-            ry = defaultView;
             setState(() {
-               turns += 1/4;
+              ry = defaultView;
+              repeatOnce();
+              _onItemTapped(index, "A");
             });
-            _onItemTapped(index, "A");
             break;
           case 1:
-            ry = defaultView + pi / 2;
-            _onItemTapped(index, "B");
+            setState(() {
+              ry = defaultView + pi / 2;
+              repeatOnce();
+              _onItemTapped(index, "B");
+            });
+
             break;
           case 2:
-            ry = defaultView + pi;
-            _onItemTapped(index, "C");
+            setState(() {
+              ry = defaultView + pi;
+              repeatOnce();
+              _onItemTapped(index, "C");
+            });
+
             break;
           case 3:
-            ry = defaultView + (3 * pi / 2);
-            _onItemTapped(index, "D");
+            setState(() {
+              ry = defaultView + (3 * pi / 2);
+              repeatOnce();
+              _onItemTapped(index, "D");
+            });
+
             break;
           default:
         }
@@ -198,58 +213,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-// import 'dart:math';
-// import 'package:calculate_ink_quantity/utils/customText.dart';
-// import 'package:flutter/material.dart';
-// import 'components/add_windows_door.dart';
-// import 'components/choose_area.dart';
-// import 'components/cube_3D.dart';
-// import '../utils/custom_card.dart';
-
-// class HomePage extends StatefulWidget {
-//   const HomePage({super.key, required this.title});
-//   final String title;
-//   @override
-//   State<HomePage> createState() => _HomePageState();
-
-//   static _HomePageState? of(BuildContext context) =>
-//       context.findAncestorStateOfType<_HomePageState>();
-// }
-
-// class _HomePageState extends State<HomePage> {
-//   late double heightScreen, widthScreen;
-
-//   double? heightArea, widthArea;
-
-//   set heightValue(double value) {
-//     heightArea = value;
-//     print("heightArea = $heightArea");
-//   }
-
-//   set widthValue(double value) {
-//     widthArea = value;
-//     print("widthArea = $widthArea");
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     heightScreen =
-//         MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
-//     widthScreen = MediaQuery.of(context).size.width;
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text("Test "),
-//       ),
-//       body: Column(
-//         children: [
-//           SizedBox(
-//             height: 20,
-//           ),
-//           ChooseArea(slidString: "Height"),
-//           ChooseArea(slidString: "Width"),
-//         ],
-//       ),
-//     );
-//   }
-// }

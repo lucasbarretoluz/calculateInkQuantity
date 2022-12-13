@@ -16,13 +16,10 @@ class ChooseArea extends StatefulWidget {
 }
 
 class _ChooseAreaState extends State<ChooseArea> {
-  late double heightScreen, widthScreen;
   double valueBottom = 1;
+
   @override
   Widget build(BuildContext context) {
-    heightScreen =
-        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
-    widthScreen = MediaQuery.of(context).size.width;
     return Column(
       children: [
         Row(
@@ -52,9 +49,7 @@ class _ChooseAreaState extends State<ChooseArea> {
                     setState(() => valueBottom = value);
                   }),
             ),
-            CustomText(text: "${valueBottom.toStringAsFixed(2)} m", size: 20),
-
-            Column(
+            Row(
               children: [
                 IconButton(
                     onPressed: () {
@@ -70,7 +65,12 @@ class _ChooseAreaState extends State<ChooseArea> {
                         }
                       });
                     },
-                    icon: const Icon(Icons.arrow_drop_up)),
+                    constraints: const BoxConstraints(),
+                    icon: const Icon(
+                      Icons.arrow_drop_up,
+                    )),
+                CustomText(
+                    text: "${valueBottom.toStringAsFixed(2)} m", size: 20),
                 IconButton(
                     onPressed: () {
                       setState(() {
@@ -85,7 +85,8 @@ class _ChooseAreaState extends State<ChooseArea> {
                         }
                       });
                     },
-                    icon: const Icon(Icons.arrow_drop_down)),
+                    constraints: const BoxConstraints(),
+                    icon: const Icon(Icons.arrow_drop_down))
               ],
             )
           ],
@@ -99,4 +100,3 @@ class _ChooseAreaState extends State<ChooseArea> {
     return ((value * mod).round().toDouble() / mod);
   }
 }
-
