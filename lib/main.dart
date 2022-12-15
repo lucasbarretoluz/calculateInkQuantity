@@ -1,8 +1,10 @@
+import 'package:calculate_ink_quantity/view/home_page.dart';
 import 'package:flutter/material.dart';
-
-import 'view/home_page.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   runApp(const MyApp());
 }
 
@@ -12,12 +14,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Calculo Tinta',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: HomePage(
-        title: "Teste 2 ",
+        title: "Tinta",
       ),
     );
   }

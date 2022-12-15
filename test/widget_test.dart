@@ -11,8 +11,4 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:calculate_ink_quantity/main.dart';
 
-void main() {
-  test("LUCAS_VIADAO", () {
-    expect(Wall(hight: 2, width: 12), 12);
-  });
-}
+void main() {}

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import '../model/room_model.dart';
 import 'components/add_windows_door.dart';
 import 'components/choose_area.dart';
-import 'components/cube_3D.dart';
 import '../utils/custom_card.dart';
 import 'components/cube_transition.dart';
 
