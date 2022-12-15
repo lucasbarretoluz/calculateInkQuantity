@@ -169,7 +169,7 @@ class _HomePageState extends State<HomePage>
                   children: [
                     CustomText(
                         text:
-                            "Área do quadrado: ${room.walls[_selectedIndex].totalArea.toStringAsFixed(2)} m²",
+                            "Área do quadrado: ${room.walls[_selectedIndex].totalArea.toStringAsPrecision(3)} m²",
                         size: 20)
                   ],
                 ),
@@ -177,11 +177,13 @@ class _HomePageState extends State<HomePage>
                   slidString: "Altura",
                   wallValue: room.walls[_selectedIndex].hight,
                   area: room.walls[_selectedIndex].totalArea,
+                  max: 50 / room.walls[_selectedIndex].width,
                 ),
                 ChooseArea(
                   slidString: "Largura",
                   wallValue: room.walls[_selectedIndex].width,
                   area: room.walls[_selectedIndex].totalArea,
+                  max: 50 / room.walls[_selectedIndex].hight,
                 ),
               ],
             )),

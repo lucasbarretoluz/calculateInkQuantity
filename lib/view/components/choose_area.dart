@@ -11,11 +11,13 @@ class ChooseArea extends StatefulWidget {
     required this.slidString,
     required this.wallValue,
     required this.area,
+    required this.max,
   }) : super(key: key);
 
   final String slidString;
   double wallValue;
   double area;
+  double max;
 
   @override
   State<ChooseArea> createState() => _ChooseAreaState();
@@ -41,20 +43,24 @@ class _ChooseAreaState extends State<ChooseArea> {
               child: Slider(
                   value: widget.wallValue,
                   label: "${widget.wallValue.toStringAsFixed(2)} m",
-                  divisions: 100,
+                  divisions: 10000,
                   min: 1,
-                  max: (50 / (widget.area / widget.wallValue)) + 5,
+                  max: widget.max,
                   onChanged: (value) {
-                    if (widget.slidString == "Altura") {
-                      HomePage.of(context)?.attWallH = roundDouble(value, 2);
-                    } else {
-                      HomePage.of(context)?.attWallW = roundDouble(value, 2);
+                    if (value < widget.max) {
+                      if (widget.slidString == "Altura") {
+                        HomePage.of(context)?.attWallH = value;
+                      } else if (widget.slidString == "Largura") {
+                        HomePage.of(context)?.attWallW = value;
+                      }
                     }
                     setState(() {
-                      if (widget.slidString == "Altura") {
-                        HomePage.of(context)?.attWallH = roundDouble(value, 2);
-                      } else {
-                        HomePage.of(context)?.attWallW = roundDouble(value, 2);
+                      if (value < widget.max) {
+                        if (widget.slidString == "Altura") {
+                          HomePage.of(context)?.attWallH = value;
+                        } else if (widget.slidString == "Largura") {
+                          HomePage.of(context)?.attWallW = value;
+                        }
                       }
                     });
                   }),
@@ -64,11 +70,11 @@ class _ChooseAreaState extends State<ChooseArea> {
                 IconButton(
                     onPressed: () {
                       setState(() {
-                        if (widget.wallValue < 50.0) {
+                        if (widget.area < 49) {
                           if (widget.slidString == "Altura") {
                             HomePage.of(context)?.attWallH =
                                 widget.wallValue += 0.01;
-                          } else {
+                          } else if (widget.slidString == "Largura") {
                             HomePage.of(context)?.attWallW =
                                 widget.wallValue += 0.01;
                           }
@@ -88,7 +94,7 @@ class _ChooseAreaState extends State<ChooseArea> {
                           if (widget.slidString == "Altura") {
                             HomePage.of(context)?.attWallH =
                                 widget.wallValue -= 0.01;
-                          } else {
+                          } else if (widget.slidString == "Largura") {
                             HomePage.of(context)?.attWallH =
                                 widget.wallValue -= 0.01;
                           }
