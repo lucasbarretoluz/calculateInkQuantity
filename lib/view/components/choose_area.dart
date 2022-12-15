@@ -1,5 +1,7 @@
+import 'package:calculate_ink_quantity/model/wall_model.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
+import '../../model/room_model.dart';
 import '../../utils/customText.dart';
 import '../home_page.dart';
 
@@ -7,17 +9,19 @@ class ChooseArea extends StatefulWidget {
   ChooseArea({
     Key? key,
     required this.slidString,
+    required this.wallValue,
+    required this.area,
   }) : super(key: key);
 
   final String slidString;
+  double wallValue;
+  double area;
 
   @override
   State<ChooseArea> createState() => _ChooseAreaState();
 }
 
 class _ChooseAreaState extends State<ChooseArea> {
-  double valueBottom = 1;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -35,18 +39,24 @@ class _ChooseAreaState extends State<ChooseArea> {
           children: [
             Expanded(
               child: Slider(
-                  value: valueBottom,
-                  label: "${valueBottom.toStringAsFixed(2)} m",
+                  value: widget.wallValue,
+                  label: "${widget.wallValue.toStringAsFixed(2)} m",
                   divisions: 100,
                   min: 1,
-                  max: 50,
+                  max: (50 / (widget.area / widget.wallValue)) + 5,
                   onChanged: (value) {
                     if (widget.slidString == "Altura") {
-                      HomePage.of(context)?.widthValue = roundDouble(value, 2);
+                      HomePage.of(context)?.attWallH = roundDouble(value, 2);
                     } else {
-                      HomePage.of(context)?.heightValue = roundDouble(value, 2);
+                      HomePage.of(context)?.attWallW = roundDouble(value, 2);
                     }
-                    setState(() => valueBottom = value);
+                    setState(() {
+                      if (widget.slidString == "Altura") {
+                        HomePage.of(context)?.attWallH = roundDouble(value, 2);
+                      } else {
+                        HomePage.of(context)?.attWallW = roundDouble(value, 2);
+                      }
+                    });
                   }),
             ),
             Row(
@@ -54,13 +64,13 @@ class _ChooseAreaState extends State<ChooseArea> {
                 IconButton(
                     onPressed: () {
                       setState(() {
-                        if (valueBottom < 50.0) {
+                        if (widget.wallValue < 50.0) {
                           if (widget.slidString == "Altura") {
-                            HomePage.of(context)?.widthValue =
-                                valueBottom += 0.01;
+                            HomePage.of(context)?.attWallH =
+                                widget.wallValue += 0.01;
                           } else {
-                            HomePage.of(context)?.heightValue =
-                                valueBottom += 0.01;
+                            HomePage.of(context)?.attWallW =
+                                widget.wallValue += 0.01;
                           }
                         }
                       });
@@ -70,17 +80,17 @@ class _ChooseAreaState extends State<ChooseArea> {
                       Icons.arrow_drop_up,
                     )),
                 CustomText(
-                    text: "${valueBottom.toStringAsFixed(2)} m", size: 20),
+                    text: "${widget.wallValue.toStringAsFixed(2)} m", size: 20),
                 IconButton(
                     onPressed: () {
                       setState(() {
-                        if (valueBottom > 1.0) {
+                        if (widget.wallValue > 1.0) {
                           if (widget.slidString == "Altura") {
-                            HomePage.of(context)?.widthValue =
-                                valueBottom -= 0.01;
+                            HomePage.of(context)?.attWallH =
+                                widget.wallValue -= 0.01;
                           } else {
-                            HomePage.of(context)?.heightValue =
-                                valueBottom -= 0.01;
+                            HomePage.of(context)?.attWallH =
+                                widget.wallValue -= 0.01;
                           }
                         }
                       });

@@ -1,19 +1,17 @@
-class Door {
-  final double hight = 1.9;
-  final double width = 0.8;
-  late double doorArea = doorAreaCalc();
+import 'wall_model.dart';
 
-  double doorAreaCalc() {
-    return hight * width;
-  }
-}
+class Room {
+  List<Wall> walls = List<Wall>.filled(4, Wall(hight: 1, width: 1));
 
-class Window {
-  final double hight = 1.2;
-  final double width = 2;
-  late double windowArea = windowAreaCalc();
+  Room({
+    required this.walls,
+  });
 
-  double windowAreaCalc() {
-    return hight * width;
-  }
+  double get totalAreaToPaint =>
+      walls[0].absoluteTotalAvailableArea +
+      walls[1].absoluteTotalAvailableArea +
+      walls[2].absoluteTotalAvailableArea +
+      walls[3].absoluteTotalAvailableArea;
+
+  double get inkAmount => totalAreaToPaint / 5;
 }

@@ -1,6 +1,8 @@
 import 'dart:math';
+import 'package:calculate_ink_quantity/model/wall_model.dart';
 import 'package:calculate_ink_quantity/utils/customText.dart';
 import 'package:flutter/material.dart';
+import '../model/room_model.dart';
 import 'components/add_windows_door.dart';
 import 'components/choose_area.dart';
 import 'components/cube_3D.dart';
@@ -19,6 +21,12 @@ class HomePage extends StatefulWidget {
 }
 
 double rx = -6, ry = 0, rz = 2 * pi, finalRy = 0;
+Room room = Room(walls: [
+  Wall(hight: 1, width: 1),
+  Wall(hight: 1, width: 1),
+  Wall(hight: 1, width: 1),
+  Wall(hight: 1, width: 1)
+]);
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
@@ -31,7 +39,7 @@ class _HomePageState extends State<HomePage>
   double turns = 0.0;
 
   late final AnimationController _controller = AnimationController(
-    upperBound: 2,
+    upperBound: 5,
     vsync: this,
     duration: const Duration(milliseconds: 1000),
   )..forward();
@@ -67,6 +75,26 @@ class _HomePageState extends State<HomePage>
     setState(() => sideArea);
   }
 
+  set attWallH(double value) {
+    room.walls[_selectedIndex].hight = value;
+    setState(() => room);
+  }
+
+  set attWallW(double value) {
+    room.walls[_selectedIndex].width = value;
+    setState(() => room);
+  }
+
+  set attDoor(int value) {
+    room.walls[_selectedIndex].nDoor = value;
+    setState(() => room);
+  }
+
+  set attWindow(int value) {
+    room.walls[_selectedIndex].nWindow = value;
+    setState(() => room);
+  }
+
   @override
   Widget build(BuildContext context) {
     heightScreen =
@@ -77,6 +105,7 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget creatScreen() {
+    print(ry);
     return Padding(
       padding: const EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 15),
       child: SingleChildScrollView(
@@ -91,11 +120,13 @@ class _HomePageState extends State<HomePage>
                 alignment: WrapAlignment.start,
                 children: [
                   CustomText(
-                      text: "Área total: 120 m²",
+                      text:
+                          "Área total: ${room.totalAreaToPaint.toStringAsFixed(2)} m²",
                       size: 20,
                       color: Colors.black),
                   CustomText(
-                      text: "Serão necessários 24 litros de tinta",
+                      text:
+                          "Serão necessários ${room.inkAmount.toStringAsFixed(2)} litros de tinta",
                       size: 20,
                       color: Colors.black),
                 ],
@@ -139,16 +170,27 @@ class _HomePageState extends State<HomePage>
                   children: [
                     CustomText(
                         text:
-                            "Área do quadrado: ${sideArea.toStringAsFixed(2)} m²",
+                            "Área do quadrado: ${room.walls[_selectedIndex].totalArea.toStringAsFixed(2)} m²",
                         size: 20)
                   ],
                 ),
-                ChooseArea(slidString: "Altura"),
-                ChooseArea(slidString: "Largura"),
+                ChooseArea(
+                  slidString: "Altura",
+                  wallValue: room.walls[_selectedIndex].hight,
+                  area: room.walls[_selectedIndex].totalArea,
+                ),
+                ChooseArea(
+                  slidString: "Largura",
+                  wallValue: room.walls[_selectedIndex].width,
+                  area: room.walls[_selectedIndex].totalArea,
+                ),
               ],
             )),
             SizedBox(height: heightScreen * 0.04),
-            const CustomCard(child: AddWindowsDoor())
+            CustomCard(
+                child: AddWindowsDoor(
+              wall: room.walls[_selectedIndex],
+            ))
           ],
         ),
       ),
@@ -166,8 +208,8 @@ class _HomePageState extends State<HomePage>
       ],
       showUnselectedLabels: true,
       currentIndex: _selectedIndex,
-      fixedColor: Colors.green,
-      unselectedItemColor: Colors.grey,
+      fixedColor: Colors.purple,
+      unselectedItemColor: Colors.blue,
       onTap: (int index) {
         switch (index) {
           case 0:
@@ -179,7 +221,7 @@ class _HomePageState extends State<HomePage>
             break;
           case 1:
             setState(() {
-              finalRy = defaultView + pi / 2 + 4 * pi;
+              finalRy = defaultView + pi / 2 + 2 * pi;
               repeatOnce();
               _onItemTapped(index, "B", finalRy);
             });

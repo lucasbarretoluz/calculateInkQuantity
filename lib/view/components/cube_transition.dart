@@ -24,11 +24,6 @@ class CubeTrasition extends AnimatedWidget {
   @override
   Widget build(BuildContext context) {
     var v = animation.value;
-    var vpi = v * pi;
-    print("vp  $v");
-    print("vpi  $vpi");
-    print("ry  $rotateY");
-    print("final $finalPosition");
     return Column(children: [
       if (finalPosition > (rotateY + v * pi)) ...[
         Cube(

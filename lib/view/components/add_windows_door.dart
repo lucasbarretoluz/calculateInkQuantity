@@ -1,10 +1,16 @@
+import 'package:calculate_ink_quantity/model/wall_model.dart';
 import 'package:calculate_ink_quantity/utils/customText.dart';
 import 'package:flutter/material.dart';
 
+import '../home_page.dart';
+
 class AddWindowsDoor extends StatefulWidget {
-  const AddWindowsDoor({
+  AddWindowsDoor({
     Key? key,
+    required this.wall,
   }) : super(key: key);
+
+  Wall wall;
 
   @override
   State<AddWindowsDoor> createState() => _AddWindowsDoorState();
@@ -77,7 +83,14 @@ class _AddWindowsDoorState extends State<AddWindowsDoor> {
             children: [
               IconButton(
                   onPressed: () {
-                    print("turubom 2");
+                    setState(() {
+                      if (title == "Adicionar porta") {
+                        HomePage.of(context)?.attDoor = widget.wall.nDoor + 1;
+                      } else {
+                        HomePage.of(context)?.attWindow =
+                            widget.wall.nWindow + 1;
+                      }
+                    });
                   },
                   icon: const Icon(
                     Icons.add,
@@ -86,13 +99,26 @@ class _AddWindowsDoorState extends State<AddWindowsDoor> {
               Container(
                 width: 60,
                 height: 60,
-                child: Center(child: CustomText(text: "22", size: 25)),
                 decoration: const BoxDecoration(
                     shape: BoxShape.circle, color: Color(0xFFe0f2f1)),
+                child: Center(
+                    child: CustomText(
+                  text: title == "Adicionar porta"
+                      ? widget.wall.nDoor.toString()
+                      : widget.wall.nWindow.toString(),
+                  size: 25,
+                )),
               ),
               IconButton(
                   onPressed: () {
-                    print("turubom");
+                    setState(() {
+                      if (title == "Adicionar porta") {
+                        HomePage.of(context)?.attDoor = widget.wall.nDoor - 1;
+                      } else {
+                        HomePage.of(context)?.attWindow =
+                            widget.wall.nWindow - 1;
+                      }
+                    });
                   },
                   icon: const Icon(
                     Icons.remove,

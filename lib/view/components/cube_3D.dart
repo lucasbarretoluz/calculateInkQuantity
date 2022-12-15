@@ -105,7 +105,7 @@ class Cube extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: Colors.red,
+        color: Colors.purple,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
