@@ -1,5 +1,6 @@
 import 'package:calculate_ink_quantity/model/wall_model.dart';
 import 'package:calculate_ink_quantity/utils/customText.dart';
+import 'package:calculate_ink_quantity/utils/themeColor.dart';
 import 'package:flutter/material.dart';
 
 import '../home_page.dart';
@@ -38,7 +39,7 @@ class _AddWindowsDoorState extends State<AddWindowsDoor> {
                 });
               },
               child: Container(
-                color: isSelected == 1 ? Colors.grey[400] : Colors.white,
+                color: isSelected == 1 ? ThemeColor.isSelected : ThemeColor.isNotSelected,
                 child: const ImageIcon(
                   AssetImage('assets/window.png'),
                   size: 60,
@@ -52,7 +53,7 @@ class _AddWindowsDoorState extends State<AddWindowsDoor> {
                 });
               },
               child: Container(
-                color: isSelected == 0 ? Colors.grey[400] : Colors.white,
+                color: isSelected == 0 ?  ThemeColor.isSelected : ThemeColor.isNotSelected,
                 child: const ImageIcon(
                   AssetImage('assets/door.png'),
                   size: 60,
@@ -84,12 +85,23 @@ class _AddWindowsDoorState extends State<AddWindowsDoor> {
               IconButton(
                   onPressed: () {
                     setState(() {
-                      if (title == "Adicionar porta") {
-                        HomePage.of(context)?.attDoor = widget.wall.nDoor + 1;
+                      if (title == "Adicionar janela") {
+                        if (widget.wall.windowAllowed)
+                          HomePage.of(context)?.attWindow =
+                              widget.wall.nWindow + 1;
                       } else {
-                        HomePage.of(context)?.attWindow =
-                            widget.wall.nWindow + 1;
+                        if (widget.wall.doorAllowed)
+                          HomePage.of(context)?.attDoor = widget.wall.nDoor + 1;
                       }
+
+                      // if (title == "Adicionar porta") {
+                      //    if (widget.wall.doorAllowed)
+                      //   HomePage.of(context)?.attDoor = widget.wall.nDoor + 1;
+                      // } else {
+                      //    if (widget.wall.windowAllowed)
+                      //   HomePage.of(context)?.attWindow =
+                      //       widget.wall.nWindow + 1;
+                      // }
                     });
                   },
                   icon: const Icon(
@@ -100,7 +112,7 @@ class _AddWindowsDoorState extends State<AddWindowsDoor> {
                 width: 60,
                 height: 60,
                 decoration: const BoxDecoration(
-                    shape: BoxShape.circle, color: Color(0xFFe0f2f1)),
+                    shape: BoxShape.circle, color: ThemeColor.isSelected),
                 child: Center(
                     child: CustomText(
                   text: title == "Adicionar porta"
@@ -113,10 +125,12 @@ class _AddWindowsDoorState extends State<AddWindowsDoor> {
                   onPressed: () {
                     setState(() {
                       if (title == "Adicionar porta") {
-                        HomePage.of(context)?.attDoor = widget.wall.nDoor - 1;
+                        if (widget.wall.nDoor > 0)
+                          HomePage.of(context)?.attDoor = widget.wall.nDoor - 1;
                       } else {
-                        HomePage.of(context)?.attWindow =
-                            widget.wall.nWindow - 1;
+                        if (widget.wall.nWindow > 0)
+                          HomePage.of(context)?.attWindow =
+                              widget.wall.nWindow - 1;
                       }
                     });
                   },

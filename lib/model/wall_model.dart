@@ -31,12 +31,12 @@ class Wall {
 
   bool get doorAllowed =>
       (percentTotalAvailableAreaPlusDoor > 0.5 ? true : false) &&
-      (hight > door.hight + 0.3 ? true : false) &
-          (width > door.width ? true : false);
+      (hight > door.hight + 0.3 ? true : false) &&
+          ((width - door.width *( nDoor + 1)) > door.width ? true : false);
   bool get windowAllowed =>
       (percentTotalAvailableAreaPlusWindow > 0.5 ? true : false) &&
-      (hight > window.hight ? true : false) &
-          (width > window.width ? true : false);
+      (hight > window.hight ? true : false) &&
+          ((width - window.width * (nWindow + 1)) > window.width ? true : false);
 }
 
 class Door {

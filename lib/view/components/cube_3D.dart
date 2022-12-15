@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:calculate_ink_quantity/utils/customText.dart';
+import 'package:calculate_ink_quantity/utils/themeColor.dart';
 import 'package:flutter/material.dart';
 
 class Cube extends StatelessWidget {
@@ -94,8 +95,8 @@ class Cube extends StatelessWidget {
     return Container(
       width: width,
       height: height,
-      decoration: BoxDecoration(
-        color: Colors.blue,
+      decoration:const BoxDecoration(
+        color: ThemeColor.cubeback,
       ),
     );
   }
@@ -104,8 +105,8 @@ class Cube extends StatelessWidget {
     return Container(
       width: width,
       height: height,
-      decoration: BoxDecoration(
-        color: Colors.purple,
+      decoration:const BoxDecoration(
+        color: ThemeColor.cubeFront,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,

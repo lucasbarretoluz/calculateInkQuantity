@@ -45,7 +45,7 @@ class _ChooseAreaState extends State<ChooseArea> {
                   label: "${widget.wallValue.toStringAsFixed(2)} m",
                   divisions: 10000,
                   min: 1,
-                  max: widget.max,
+                  max: widget.max + 0.01,
                   onChanged: (value) {
                     if (value < widget.max) {
                       if (widget.slidString == "Altura") {
@@ -70,7 +70,7 @@ class _ChooseAreaState extends State<ChooseArea> {
                 IconButton(
                     onPressed: () {
                       setState(() {
-                        if (widget.area < 49) {
+                        if (widget.area < widget.max - 0.01) {
                           if (widget.slidString == "Altura") {
                             HomePage.of(context)?.attWallH =
                                 widget.wallValue += 0.01;

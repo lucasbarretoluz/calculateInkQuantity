@@ -1,6 +1,8 @@
 import 'dart:math';
+import 'package:calculate_ink_quantity/model/inks_model.dart';
 import 'package:calculate_ink_quantity/model/wall_model.dart';
 import 'package:calculate_ink_quantity/utils/customText.dart';
+import 'package:calculate_ink_quantity/utils/themeColor.dart';
 import 'package:flutter/material.dart';
 import '../model/room_model.dart';
 import 'components/add_windows_door.dart';
@@ -8,10 +10,9 @@ import 'components/choose_area.dart';
 import '../utils/custom_card.dart';
 import 'components/cube_transition.dart';
 
-//Escreve ai teste
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
-  final String title;
+  const HomePage({super.key});
+
   @override
   State<HomePage> createState() => _HomePageState();
 
@@ -27,14 +28,14 @@ Room room = Room(walls: [
   Wall(hight: 1, width: 1)
 ]);
 
+Inks ink = Inks(inkTotal: room.inkAmount);
+
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
   String _sideSelected = "A";
   double _finalRy = 0;
   late double heightScreen, widthScreen;
-  double heightArea = 1, widthArea = 1;
-  double sideArea = 1;
   double turns = 0.0;
 
   late final AnimationController _controller = AnimationController(
@@ -62,31 +63,28 @@ class _HomePageState extends State<HomePage>
     });
   }
 
-  set heightValue(double value) {
-    heightArea = value;
-    sideArea = heightArea * widthArea;
-    setState(() => sideArea);
-  }
-
-  set widthValue(double value) {
-    widthArea = value;
-    sideArea = heightArea * widthArea;
-    setState(() => sideArea);
-  }
-
   set attWallH(double value) {
     room.walls[_selectedIndex].hight = value;
-    setState(() => room);
+    setState(() {
+      room;
+      ink.inkTotal = room.inkAmount;
+    });
   }
 
   set attWallW(double value) {
     room.walls[_selectedIndex].width = value;
-    setState(() => room);
+    setState(() {
+      room;
+      ink.inkTotal = room.inkAmount;
+    });
   }
 
   set attDoor(int value) {
     room.walls[_selectedIndex].nDoor = value;
-    setState(() => room);
+    setState(() {
+      room;
+      ink.inkTotal = room.inkAmount;
+    });
   }
 
   set attWindow(int value) {
@@ -104,7 +102,6 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget creatScreen() {
-    print(ry);
     return Padding(
       padding: const EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 15),
       child: SingleChildScrollView(
@@ -120,14 +117,14 @@ class _HomePageState extends State<HomePage>
                 children: [
                   CustomText(
                       text:
-                          "Área total: ${room.totalAreaToPaint.toStringAsFixed(2)} m²",
+                          "Área total a ser pintada: ${room.totalAreaToPaint.toStringAsFixed(2)} m²",
                       size: 20,
-                      color: Colors.black),
+                      color: ThemeColor.fontPrimary),
                   CustomText(
                       text:
                           "Serão necessários ${room.inkAmount.toStringAsFixed(2)} litros de tinta",
                       size: 20,
-                      color: Colors.black),
+                      color: ThemeColor.fontPrimary),
                 ],
               ),
             ),
@@ -154,8 +151,15 @@ class _HomePageState extends State<HomePage>
                 ),
                 Column(
                   children: [
-                    CustomText(text: "Latas: ", size: 20, color: Colors.black),
-                    CustomText(text: " 1x 18L", size: 20, color: Colors.black),
+                    CustomText(
+                        text: "Latas: ",
+                        size: 20,
+                        color: ThemeColor.fontPrimary),
+                    CustomText(
+                        text:
+                            " ${ink.can18000}x 18L \n ${ink.can3600}x 3,6L \n ${ink.can2500}x 2,5L \n ${ink.can500}x 0,5L \n ",
+                        size: 20,
+                        color: ThemeColor.fontPrimary),
                   ],
                 )
               ],
@@ -169,7 +173,7 @@ class _HomePageState extends State<HomePage>
                   children: [
                     CustomText(
                         text:
-                            "Área do quadrado: ${room.walls[_selectedIndex].totalArea.toStringAsPrecision(3)} m²",
+                            "Área da parede: ${room.walls[_selectedIndex].totalArea.toStringAsPrecision(3)} m²",
                         size: 20)
                   ],
                 ),
